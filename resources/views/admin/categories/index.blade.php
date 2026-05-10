@@ -28,11 +28,15 @@
   </div>
 
   {{-- Session Status --}}
-  @if (session('success'))
-  <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative mb-4" role="alert">
-    <span class="block sm:inline">{{ session('success') }}</span>
+  <div x-data="{ show: {{ session('success') ? 'true' : 'false' }} }"
+       x-init="if (show) { setTimeout(() => show = false, 3000); }"
+       x-show="show"
+       x-transition:leave.duration.500ms
+       class="mb-4">
+    <div class="bg-green-100 border border-green-400 text-green-700 px-4 py-3 rounded relative" role="alert">
+      <span class="block sm:inline">{{ session('success') }}</span>
+    </div>
   </div>
-  @endif
 
 
 
