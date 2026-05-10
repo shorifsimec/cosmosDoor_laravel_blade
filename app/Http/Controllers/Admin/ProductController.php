@@ -19,6 +19,11 @@ class ProductController extends Controller
         return view('admin.products.index', compact('products', 'categories', 'brands'));
     }
 
+    public function show(Product $product)
+    {
+        return view('admin.products.show', compact('product'));
+    }
+
     public function store(Request $request)
     {
         $validatedData = $request->validate([

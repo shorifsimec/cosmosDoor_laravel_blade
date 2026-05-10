@@ -109,11 +109,12 @@
                     <td class="px-6 py-4 truncate max-w-xs">{{ $product->description }}</td>
                     <td class="px-6 py-4">{{ $product->size }}</td>
                     <td class="px-6 py-4">{{ $product->color }}</td>
-                    <td class="px-6 py-4">
-                        <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600">Edit</a>
+                    <td class="px-6 py-4 flex space-x-2">
+                        <a href="{{ route('products.show', $product->id) }}" class="text-green-600 hover:text-green-900">Details</a>
+                        <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600 hover:text-blue-900">Edit</a>
                         <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
                             @csrf @method('DELETE')
-                            <button type="submit" class="text-red-600 ml-2">Delete</button>
+                            <button type="submit" class="text-red-600 hover:text-red-900 ml-2">Delete</button>
                         </form>
                     </td>
                 </tr>
