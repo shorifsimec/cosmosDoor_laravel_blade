@@ -6,10 +6,12 @@
 <div class="bg-white p-6 rounded shadow mb-4"
   x-data="{
         open: false,
-        editingCategory: null,
+        editingCategory: { id: null, name: '' },
+        showEditModal: false,
 
         editCategory(category) {
-            this.editingCategory = category;
+            this.editingCategory = { ...category };
+            this.showEditModal = true;
             this.open = false;
         }
      }">
@@ -102,12 +104,12 @@
   </div>
 
   {{-- Edit Modal --}}
-  <div x-show="editingCategory !== null" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
+  <div x-show="showEditModal" class="fixed inset-0 z-50 overflow-y-auto" style="display: none;">
     <div class="flex items-center justify-center min-h-screen px-4">
-      <div class="fixed inset-0 bg-gray-500 opacity-75" @click="editingCategory = null"></div>
+      <div class="fixed inset-0 bg-gray-500 opacity-75" @click="showEditModal = false"></div>
       <div class="bg-white rounded-lg p-6 w-full max-w-lg z-10">
         <h3 class="text-lg font-semibold mb-4">Edit Category</h3>
-        <form x-bind:action="'/admin/categories/' + (editingCategory ? editingCategory.id : '')"
+        <form x-bind:action="'/admin/categories/' + editingCategory.id"
           method="POST">
           @csrf
           @method('PUT')
@@ -121,13 +123,13 @@
             <input type="text"
               name="name"
               id="edit_name"
-              x-model="editingCategory ? editingCategory.name : ''"
+              x-model="editingCategory.name"
               class="mt-1 block w-full rounded-md border-gray-300 shadow-sm">
           </div>
 
           <div class="flex justify-end">
             <button type="button"
-              @click="editingCategory = null"
+              @click="showEditModal = false"
               class="bg-gray-300 text-gray-700 px-4 py-2 rounded mr-2">
               Cancel
             </button>
