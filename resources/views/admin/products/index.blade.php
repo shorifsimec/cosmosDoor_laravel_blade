@@ -81,6 +81,7 @@
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Brand</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
@@ -89,9 +90,16 @@
         <tbody class="bg-white divide-y divide-gray-200">
             @foreach($products as $product)
             <tr>
-                <td class="px-6 py-4"><img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover"></td>
+                <td class="px-6 py-4">
+                    @if($product->image)
+                        <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover">
+                    @else
+                        <span class="text-gray-400">No image</span>
+                    @endif
+                </td>
                 <td class="px-6 py-4">{{ $product->name }}</td>
                 <td class="px-6 py-4">{{ $product->category->name }}</td>
+                <td class="px-6 py-4">{{ $product->brand->name }}</td>
                 <td class="px-6 py-4">{{ $product->price1 }}</td>
                 <td class="px-6 py-4">{{ $product->quantity }}</td>
                 <td class="px-6 py-4">
