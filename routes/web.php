@@ -3,8 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BrandController;
-use App\Http\Controllers\CategoriesController;
 use App\Http\Controllers\Admin\CategoryController;
+use App\Http\Controllers\Admin\CustomerController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -26,14 +26,8 @@ Route::middleware('auth')->group(function () {
         return view('dashboard');
     })->name('dashboard');
 
-    // Dummy customers Routes
-    Route::get('/admin/customers', function () {
-        return view('admin/customers.index');
-    })->name('customers.index');
-
-    Route::get('/admin/customers/create', function () {
-        return view('admin/customers.create');
-    })->name('customers.create');
+    // Customers Routes
+    Route::resource('/admin/customers', CustomerController::class)->names('customers');
 
     // Brands Routes
     Route::resource('/admin/brands', BrandController::class)->names('brands');
