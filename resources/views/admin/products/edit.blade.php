@@ -1,0 +1,71 @@
+@extends('layouts.app')
+
+@section('title', 'Edit Product')
+
+@section('content')
+<div class="bg-white p-6 rounded shadow">
+    <h2 class="text-2xl font-bold mb-6">Edit Product: {{ $product->name }}</h2>
+
+    <form action="{{ route('products.update', $product->id) }}" method="POST" enctype="multipart/form-data">
+        @csrf
+        @method('PUT')
+        <div class="grid grid-cols-1 md:grid-cols-2 gap-4">
+            <div>
+                <label for="category_id" class="block text-sm font-medium text-gray-700">Category</label>
+                <select name="category_id" id="category_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    @foreach($categories as $category)
+                        <option value="{{ $category->id }}" {{ $product->category_id == $category->id ? 'selected' : '' }}>{{ $category->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="brand_id" class="block text-sm font-medium text-gray-700">Brand</label>
+                <select name="brand_id" id="brand_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+                    @foreach($brands as $brand)
+                        <option value="{{ $brand->id }}" {{ $product->brand_id == $brand->id ? 'selected' : '' }}>{{ $brand->name }}</option>
+                    @endforeach
+                </select>
+            </div>
+            <div>
+                <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
+                <input type="text" name="name" id="name" value="{{ $product->name }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+                <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
+                <input type="file" name="image" id="image" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                @if($product->image)
+                    <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover mt-2">
+                @endif
+            </div>
+            <div class="col-span-2">
+                <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
+                <textarea name="description" id="description" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">{{ $product->description }}</textarea>
+            </div>
+            <div>
+                <label for="price1" class="block text-sm font-medium text-gray-700">Price 1</label>
+                <input type="number" step="0.01" name="price1" id="price1" value="{{ $product->price1 }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+                <label for="price2" class="block text-sm font-medium text-gray-700">Price 2 (Optional)</label>
+                <input type="number" step="0.01" name="price2" id="price2" value="{{ $product->price2 }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div>
+                <label for="quantity" class="block text-sm font-medium text-gray-700">Quantity</label>
+                <input type="number" name="quantity" id="quantity" value="{{ $product->quantity }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
+            </div>
+            <div>
+                <label for="size" class="block text-sm font-medium text-gray-700">Size</label>
+                <input type="text" name="size" id="size" value="{{ $product->size }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+            <div>
+                <label for="color" class="block text-sm font-medium text-gray-700">Color</label>
+                <input type="text" name="color" id="color" value="{{ $product->color }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+            </div>
+        </div>
+        <div class="mt-6">
+            <button type="submit" class="bg-blue-500 text-white px-4 py-2 rounded hover:bg-blue-600">Update Product</button>
+            <a href="{{ route('products.index') }}" class="text-gray-600 ml-4">Cancel</a>
+        </div>
+    </form>
+</div>
+@endsection
