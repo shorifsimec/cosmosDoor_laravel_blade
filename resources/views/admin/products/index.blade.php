@@ -84,8 +84,16 @@
                     <input type="text" name="size" id="size" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
                 </div>
                 <div>
-                    <label for="color" class="block text-sm font-medium text-gray-700">Color</label>
-                    <input type="text" name="color" id="color" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                    <label for="color" class="block text-sm font-medium text-gray-700 mb-1">Colors</label>
+                    <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 border rounded-md p-3 bg-white max-h-40 overflow-y-auto">
+                        @foreach($colors as $color)
+                        <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition-colors">
+                            <input type="checkbox" name="color[]" value="{{ $color->code }}" class="rounded text-blue-600 focus:ring-blue-500">
+                            <div class="w-4 h-4 rounded-full border shadow-sm" style="background-color: {{ $color->code }}"></div>
+                            <span class="text-sm text-gray-700">{{ $color->name }}</span>
+                        </label>
+                        @endforeach
+                    </div>
                 </div>
             </div>
             <div class="mt-4">
@@ -107,7 +115,7 @@
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
-                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Color</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Colors</th>
                     <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
                 </tr>
             </thead>
@@ -145,7 +153,17 @@
                         @endif
                     </td>
                     <td class="px-6 py-4">{{ $product->size }}</td>
-                    <td class="px-6 py-4">{{ $product->color }}</td>
+                    <td class="px-6 py-4">
+                        <div class="flex flex-wrap gap-1">
+                            @if(is_array($product->color))
+                                @foreach($product->color as $c)
+                                    <div class="w-4 h-4 rounded-full border shadow-sm" style="background-color: {{ $c }}" title="{{ $c }}"></div>
+                                @endforeach
+                            @else
+                                <span class="text-gray-400 text-xs">None</span>
+                            @endif
+                        </div>
+                    </td>
                     <td class="px-6 py-4 flex space-x-2">
                         <a href="{{ route('products.show', $product->id) }}" class="text-green-600 hover:text-green-900">Details</a>
                         <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600 hover:text-blue-900">Edit</a>

@@ -83,8 +83,16 @@
                         <p class="text-gray-900">{{ $product->size ?? 'N/A' }}</p>
                     </div>
                     <div>
-                        <span class="text-sm text-gray-500 uppercase font-bold">Color</span>
-                        <p class="text-gray-900">{{ $product->color ?? 'N/A' }}</p>
+                        <span class="text-sm text-gray-500 uppercase font-bold">Available Colors</span>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            @if(is_array($product->color) && count($product->color) > 0)
+                                @foreach($product->color as $c)
+                                    <div class="w-6 h-6 rounded-full border shadow-sm" style="background-color: {{ $c }}" title="{{ $c }}"></div>
+                                @endforeach
+                            @else
+                                <p class="text-gray-500">N/A</p>
+                            @endif
+                        </div>
                     </div>
                 </div>
             </div>

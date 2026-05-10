@@ -7,6 +7,7 @@ use Illuminate\Http\Request;
 use App\Models\Product;
 use App\Models\Category;
 use App\Models\Brand;
+use App\Models\Color;
 use Illuminate\Support\Facades\Storage;
 
 class ProductController extends Controller
@@ -16,7 +17,8 @@ class ProductController extends Controller
         $products = Product::with(['category', 'brand'])->get();
         $categories = Category::all();
         $brands = Brand::all();
-        return view('admin.products.index', compact('products', 'categories', 'brands'));
+        $colors = Color::all();
+        return view('admin.products.index', compact('products', 'categories', 'brands', 'colors'));
     }
 
     public function show(Product $product)
@@ -36,7 +38,7 @@ class ProductController extends Controller
             'price2' => 'nullable|numeric',
             'quantity' => 'required|integer',
             'size' => 'nullable|string',
-            'color' => 'nullable|string',
+            'color' => 'nullable|array',
         ]);
 
         $imagePaths = [];
@@ -56,7 +58,8 @@ class ProductController extends Controller
     {
         $categories = Category::all();
         $brands = Brand::all();
-        return view('admin.products.edit', compact('product', 'categories', 'brands'));
+        $colors = Color::all();
+        return view('admin.products.edit', compact('product', 'categories', 'brands', 'colors'));
     }
 
     public function update(Request $request, Product $product)
@@ -71,7 +74,7 @@ class ProductController extends Controller
             'price2' => 'nullable|numeric',
             'quantity' => 'required|integer',
             'size' => 'nullable|string',
-            'color' => 'nullable|string',
+            'color' => 'nullable|array',
         ]);
 
         $imagePaths = $product->image ?? [];

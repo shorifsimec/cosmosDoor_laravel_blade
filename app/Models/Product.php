@@ -25,6 +25,7 @@ class Product extends Model
 
     protected $casts = [
         'image' => 'array',
+        'color' => 'array',
     ];
 
     public function category(): BelongsTo

@@ -88,8 +88,19 @@
                 <input type="text" name="size" id="size" value="{{ $product->size }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
             </div>
             <div>
-                <label for="color" class="block text-sm font-medium text-gray-700">Color</label>
-                <input type="text" name="color" id="color" value="{{ $product->color }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                <label for="color" class="block text-sm font-medium text-gray-700 mb-1">Colors</label>
+                <div class="grid grid-cols-2 sm:grid-cols-3 gap-2 border rounded-md p-3 bg-white max-h-40 overflow-y-auto">
+                    @php $selectedColors = is_array($product->color) ? $product->color : []; @endphp
+                    @foreach($colors as $color)
+                    <label class="flex items-center space-x-2 cursor-pointer hover:bg-gray-50 p-1 rounded transition-colors">
+                        <input type="checkbox" name="color[]" value="{{ $color->code }}" 
+                            class="rounded text-blue-600 focus:ring-blue-500"
+                            {{ in_array($color->code, $selectedColors) ? 'checked' : '' }}>
+                        <div class="w-4 h-4 rounded-full border shadow-sm" style="background-color: {{ $color->code }}"></div>
+                        <span class="text-sm text-gray-700">{{ $color->name }}</span>
+                    </label>
+                    @endforeach
+                </div>
             </div>
         </div>
         <div class="mt-6">
