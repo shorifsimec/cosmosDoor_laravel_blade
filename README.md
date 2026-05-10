@@ -70,3 +70,7 @@ npm run dev
 php artisan migrate:fresh --seed
 
 php artisan serve
+
+## when image not showing
+
+php artisan storage:link
