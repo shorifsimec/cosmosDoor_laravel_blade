@@ -3,6 +3,8 @@
 use App\Http\Controllers\ProfileController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BrandController;
+use App\Http\Controllers\CategoriesController;
+use App\Http\Controllers\Admin\CategoryController;
 
 Route::get('/', function () {
     return view('welcome');
@@ -33,17 +35,12 @@ Route::middleware('auth')->group(function () {
         return view('admin/customers.create');
     })->name('customers.create');
 
-    // Dummy categories Routes
-    Route::get('/admin/categories', function () {
-        return view('admin/categories.index');
-    })->name('categories.index');
-
-    Route::get('/admin/categories/create', function () {
-        return view('admin/categories.create');
-    })->name('categories.create');
-
     // Brands Routes
     Route::resource('/admin/brands', BrandController::class)->names('brands');
+
+    Route::prefix('admin')->group(function () {
+        Route::resource('categories', CategoryController::class);
+    });
 });
 
 require __DIR__ . '/auth.php';
