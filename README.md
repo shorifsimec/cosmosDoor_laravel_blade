@@ -67,6 +67,8 @@ npm run build
 
 npm run dev
 
+php artisan key:generate
+
 php artisan migrate:fresh --seed
 
 php artisan serve

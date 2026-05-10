@@ -22,7 +22,7 @@
                     <select name="category_id" id="category_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
                         <option value="">Select Category</option>
                         @foreach($categories as $category)
-                            <option value="{{ $category->id }}">{{ $category->name }}</option>
+                        <option value="{{ $category->id }}">{{ $category->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -31,7 +31,7 @@
                     <select name="brand_id" id="brand_id" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
                         <option value="">Select Brand</option>
                         @foreach($brands as $brand)
-                            <option value="{{ $brand->id }}">{{ $brand->name }}</option>
+                        <option value="{{ $brand->id }}">{{ $brand->name }}</option>
                         @endforeach
                     </select>
                 </div>
@@ -96,9 +96,9 @@
                 <tr>
                     <td class="px-6 py-4">
                         @if($product->image)
-                            <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover">
+                        <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover">
                         @else
-                            <span class="text-gray-400">No image</span>
+                        <span class="text-gray-400">No image</span>
                         @endif
                     </td>
                     <td class="px-6 py-4">{{ $product->name }}</td>
@@ -106,7 +106,17 @@
                     <td class="px-6 py-4">{{ $product->brand->name }}</td>
                     <td class="px-6 py-4">{{ $product->price1 }}</td>
                     <td class="px-6 py-4">{{ $product->quantity }}</td>
-                    <td class="px-6 py-4 truncate max-w-xs">{{ $product->description }}</td>
+                    <td class="px-6 py-4 w-[40px] text-justify" x-data="{ expanded: false }">
+                        <div x-show="!expanded" class="text-sm text-gray-900">
+                            {{ \Illuminate\Support\Str::words($product->description, 5, '...') }}
+                        </div>
+                        <div x-show="expanded" x-cloak class="text-sm text-gray-900">
+                            {{ $product->description }}
+                        </div>
+                        @if(\Illuminate\Support\Str::wordCount($product->description) > 5)
+                        <button @click="expanded = !expanded" class="text-blue-500 hover:text-blue-700 text-xs font-semibold focus:outline-none mt-1" x-text="expanded ? 'Show Less' : 'More'"></button>
+                        @endif
+                    </td>
                     <td class="px-6 py-4">{{ $product->size }}</td>
                     <td class="px-6 py-4">{{ $product->color }}</td>
                     <td class="px-6 py-4 flex space-x-2">
