@@ -75,49 +75,51 @@
     </div>
 
     {{-- Product List --}}
-    <table class="min-w-full divide-y divide-gray-200">
-        <thead>
-            <tr>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Brand</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Color</th>
-                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
-            </tr>
-        </thead>
-        <tbody class="bg-white divide-y divide-gray-200">
-            @foreach($products as $product)
-            <tr>
-                <td class="px-6 py-4">
-                    @if($product->image)
-                        <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover">
-                    @else
-                        <span class="text-gray-400">No image</span>
-                    @endif
-                </td>
-                <td class="px-6 py-4">{{ $product->name }}</td>
-                <td class="px-6 py-4">{{ $product->category->name }}</td>
-                <td class="px-6 py-4">{{ $product->brand->name }}</td>
-                <td class="px-6 py-4">{{ $product->price1 }}</td>
-                <td class="px-6 py-4">{{ $product->quantity }}</td>
-                <td class="px-6 py-4 truncate max-w-xs">{{ $product->description }}</td>
-                <td class="px-6 py-4">{{ $product->size }}</td>
-                <td class="px-6 py-4">{{ $product->color }}</td>
-                <td class="px-6 py-4">
-                    <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600">Edit</a>
-                    <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
-                        @csrf @method('DELETE')
-                        <button type="submit" class="text-red-600 ml-2">Delete</button>
-                    </form>
-                </td>
-            </tr>
-            @endforeach
-        </tbody>
-    </table>
+    <div class="overflow-x-auto">
+        <table class="min-w-full divide-y divide-gray-200">
+            <thead>
+                <tr>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Image</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Name</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Category</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Brand</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Color</th>
+                    <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
+                </tr>
+            </thead>
+            <tbody class="bg-white divide-y divide-gray-200">
+                @foreach($products as $product)
+                <tr>
+                    <td class="px-6 py-4">
+                        @if($product->image)
+                            <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover">
+                        @else
+                            <span class="text-gray-400">No image</span>
+                        @endif
+                    </td>
+                    <td class="px-6 py-4">{{ $product->name }}</td>
+                    <td class="px-6 py-4">{{ $product->category->name }}</td>
+                    <td class="px-6 py-4">{{ $product->brand->name }}</td>
+                    <td class="px-6 py-4">{{ $product->price1 }}</td>
+                    <td class="px-6 py-4">{{ $product->quantity }}</td>
+                    <td class="px-6 py-4 truncate max-w-xs">{{ $product->description }}</td>
+                    <td class="px-6 py-4">{{ $product->size }}</td>
+                    <td class="px-6 py-4">{{ $product->color }}</td>
+                    <td class="px-6 py-4">
+                        <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600">Edit</a>
+                        <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
+                            @csrf @method('DELETE')
+                            <button type="submit" class="text-red-600 ml-2">Delete</button>
+                        </form>
+                    </td>
+                </tr>
+                @endforeach
+            </tbody>
+        </table>
+    </div>
 </div>
 @endsection
