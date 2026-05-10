@@ -39,9 +39,29 @@
                     <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
                     <input type="text" name="name" id="name" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
                 </div>
-                <div>
-                    <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
-                    <input type="file" name="image" id="image" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
+                <div x-data="{ 
+                    images: [],
+                    previewImages(event) {
+                        this.images = [];
+                        const files = event.target.files;
+                        for (let i = 0; i < files.length; i++) {
+                            this.images.push(URL.createObjectURL(files[i]));
+                        }
+                    }
+                }">
+                    <label for="images" class="block text-sm font-medium text-gray-700">Images</label>
+                    <input type="file" name="images[]" id="images" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" multiple @change="previewImages">
+                    
+                    {{-- Real-time Preview --}}
+                    <template x-if="images.length > 0">
+                        <div class="flex flex-wrap gap-2 mt-2">
+                            <template x-for="(image, index) in images" :key="index">
+                                <div class="relative">
+                                    <img :src="image" class="w-16 h-16 object-cover rounded border shadow-sm">
+                                </div>
+                            </template>
+                        </div>
+                    </template>
                 </div>
                 <div class="col-span-2">
                     <label for="description" class="block text-sm font-medium text-gray-700">Description</label>
@@ -95,10 +115,17 @@
                 @foreach($products as $product)
                 <tr>
                     <td class="px-6 py-4">
-                        @if($product->image)
-                        <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover">
+                        @if($product->image && count($product->image) > 0)
+                            <div class="relative inline-block">
+                                <img src="{{ asset('storage/'.$product->image[0]) }}" class="w-16 h-16 object-cover rounded">
+                                @if(count($product->image) > 1)
+                                    <span class="absolute -top-2 -right-2 bg-blue-500 text-white text-[10px] px-1.5 py-0.5 rounded-full">
+                                        +{{ count($product->image) - 1 }}
+                                    </span>
+                                @endif
+                            </div>
                         @else
-                        <span class="text-gray-400">No image</span>
+                            <span class="text-gray-400">No image</span>
                         @endif
                     </td>
                     <td class="px-6 py-4">{{ $product->name }}</td>

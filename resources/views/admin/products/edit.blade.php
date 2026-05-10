@@ -30,11 +30,41 @@
                 <label for="name" class="block text-sm font-medium text-gray-700">Product Name</label>
                 <input type="text" name="name" id="name" value="{{ $product->name }}" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" required>
             </div>
-            <div>
-                <label for="image" class="block text-sm font-medium text-gray-700">Image</label>
-                <input type="file" name="image" id="image" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2">
-                @if($product->image)
-                    <img src="{{ asset('storage/'.$product->image) }}" class="w-16 h-16 object-cover mt-2">
+            <div x-data="{ 
+                newImages: [],
+                previewImages(event) {
+                    this.newImages = [];
+                    const files = event.target.files;
+                    for (let i = 0; i < files.length; i++) {
+                        this.newImages.push(URL.createObjectURL(files[i]));
+                    }
+                }
+            }">
+                <label for="images" class="block text-sm font-medium text-gray-700">Images (Add More)</label>
+                <input type="file" name="images[]" id="images" class="mt-1 block w-full border border-gray-300 rounded-md shadow-sm p-2" multiple @change="previewImages">
+                
+                {{-- New Images Preview --}}
+                <template x-if="newImages.length > 0">
+                    <div class="mt-2">
+                        <span class="text-xs font-semibold text-gray-500 uppercase">New Selections:</span>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            <template x-for="(image, index) in newImages" :key="index">
+                                <img :src="image" class="w-16 h-16 object-cover rounded border shadow-sm">
+                            </template>
+                        </div>
+                    </div>
+                </template>
+
+                {{-- Existing Images --}}
+                @if($product->image && count($product->image) > 0)
+                    <div class="mt-4">
+                        <span class="text-xs font-semibold text-gray-500 uppercase">Current Images:</span>
+                        <div class="flex flex-wrap gap-2 mt-1">
+                            @foreach($product->image as $img)
+                                <img src="{{ asset('storage/'.$img) }}" class="w-16 h-16 object-cover rounded border opacity-75">
+                            @endforeach
+                        </div>
+                    </div>
                 @endif
             </div>
             <div class="col-span-2">

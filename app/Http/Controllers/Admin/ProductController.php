@@ -30,7 +30,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'price1' => 'required|numeric',
             'price2' => 'nullable|numeric',
@@ -39,9 +39,13 @@ class ProductController extends Controller
             'color' => 'nullable|string',
         ]);
 
-        if ($request->hasFile('image')) {
-            $validatedData['image'] = $request->file('image')->store('products', 'public');
+        $imagePaths = [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePaths[] = $image->store('products', 'public');
+            }
         }
+        $validatedData['image'] = $imagePaths;
 
         Product::create($validatedData);
 
@@ -61,7 +65,7 @@ class ProductController extends Controller
             'category_id' => 'required|exists:categories,id',
             'brand_id' => 'required|exists:brands,id',
             'name' => 'required|string|max:255',
-            'image' => 'nullable|image|max:2048',
+            'images.*' => 'nullable|image|max:2048',
             'description' => 'nullable|string',
             'price1' => 'required|numeric',
             'price2' => 'nullable|numeric',
@@ -70,12 +74,13 @@ class ProductController extends Controller
             'color' => 'nullable|string',
         ]);
 
-        if ($request->hasFile('image')) {
-            if ($product->image) {
-                Storage::disk('public')->delete($product->image);
+        $imagePaths = $product->image ?? [];
+        if ($request->hasFile('images')) {
+            foreach ($request->file('images') as $image) {
+                $imagePaths[] = $image->store('products', 'public');
             }
-            $validatedData['image'] = $request->file('image')->store('products', 'public');
         }
+        $validatedData['image'] = $imagePaths;
 
         $product->update($validatedData);
 
@@ -85,7 +90,9 @@ class ProductController extends Controller
     public function destroy(Product $product)
     {
         if ($product->image) {
-            Storage::disk('public')->delete($product->image);
+            foreach ($product->image as $img) {
+                Storage::disk('public')->delete($img);
+            }
         }
         $product->delete();
 
