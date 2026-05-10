@@ -84,6 +84,9 @@
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Brand</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Price</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Quantity</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Description</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Size</th>
+                <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Color</th>
                 <th class="px-6 py-3 bg-gray-50 text-left text-xs font-medium text-gray-500 uppercase">Actions</th>
             </tr>
         </thead>
@@ -102,6 +105,9 @@
                 <td class="px-6 py-4">{{ $product->brand->name }}</td>
                 <td class="px-6 py-4">{{ $product->price1 }}</td>
                 <td class="px-6 py-4">{{ $product->quantity }}</td>
+                <td class="px-6 py-4 truncate max-w-xs">{{ $product->description }}</td>
+                <td class="px-6 py-4">{{ $product->size }}</td>
+                <td class="px-6 py-4">{{ $product->color }}</td>
                 <td class="px-6 py-4">
                     <a href="{{ route('products.edit', $product->id) }}" class="text-blue-600">Edit</a>
                     <form action="{{ route('products.destroy', $product->id) }}" method="POST" class="inline">
