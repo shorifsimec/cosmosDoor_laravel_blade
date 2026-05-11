@@ -9,10 +9,12 @@ use App\Http\Controllers\Admin\ProductController;
 use App\Http\Controllers\Admin\ColorController;
 use App\Http\Controllers\Admin\OrderController;
 use App\Models\Product;
+use App\Models\Category;
 
 Route::get('/', function () {
     $products = Product::all();
-    return view('welcome', compact('products'));
+    $categories = Category::all();
+    return view('welcome', compact('products', 'categories'));
 });
 
 Route::get('/dashboard', function () {
