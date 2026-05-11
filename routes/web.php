@@ -44,7 +44,7 @@ Route::get('/category/{category}', function ($category) {
     return view('welcome', compact('products', 'categories', 'category'));
 })->name('home.category');
 
-Route::middleware('auth')->group(function () {
+Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin/dashboard', function () {
         return view('dashboard');
     })->name('admin.dashboard');
