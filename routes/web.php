@@ -1,6 +1,7 @@
 <?php
 
 use App\Http\Controllers\ProfileController;
+use App\Http\Controllers\CartController;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Admin\BrandController;
 use App\Http\Controllers\Admin\CategoryController;
@@ -13,6 +14,18 @@ use App\Models\Category;
 
 // Move auth routes before catch-all
 require __DIR__ . '/auth.php';
+
+use App\Http\Controllers\CheckoutController;
+
+// Checkout Routes
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
+// Cart Routes
+Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
+Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.add');
+Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
+Route::patch('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
 
 Route::get('/', function () {
     $products = Product::all();
@@ -44,5 +57,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('products', ProductController::class);
         Route::resource('colors', ColorController::class);
         Route::resource('orders', OrderController::class);
+        Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
     });
 });

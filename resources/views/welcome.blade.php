@@ -30,10 +30,11 @@
                     </div>
                 </div>
 
-                <div class="flex items-center">
-                    @if (Route::has('login'))
+                    <div class="flex items-center">
+                        <a href="{{ route('cart.index') }}" class="text-sm text-gray-700 underline mr-4">Cart</a>
+                        @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('admin/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
+                            <a href="{{ route('admin.dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
                         @else
                             <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
                             @if (Route::has('register'))
@@ -56,7 +57,10 @@
                     @endif
                     <h2 class="text-xl font-semibold mb-2">{{ $product->name }}</h2>
                     <p class="text-gray-600 mb-2">${{ $product->price1 }}</p>
-                    <button class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">Add to Cart</button>
+                    <form action="{{ route('cart.add', $product->id) }}" method="POST">
+                        @csrf
+                        <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded hover:bg-blue-600 transition">Add to Cart</button>
+                    </form>
                 </div>
             @endforeach
         </div>

@@ -25,7 +25,18 @@
                     <td class="px-6 py-4">{{ $order->id }}</td>
                     <td class="px-6 py-4">{{ $order->user->name ?? 'N/A' }}</td>
                     <td class="px-6 py-4">{{ $order->total_price }}</td>
-                    <td class="px-6 py-4 capitalize">{{ $order->status }}</td>
+                    <td class="px-6 py-4">
+                        <form action="{{ route('orders.updateStatus', $order->id) }}" method="POST" class="flex items-center">
+                            @csrf @method('PATCH')
+                            <select name="status" class="border rounded p-1 text-sm">
+                                <option value="pending" {{ $order->status == 'pending' ? 'selected' : '' }}>Pending</option>
+                                <option value="processing" {{ $order->status == 'processing' ? 'selected' : '' }}>Processing</option>
+                                <option value="completed" {{ $order->status == 'completed' ? 'selected' : '' }}>Completed</option>
+                                <option value="cancelled" {{ $order->status == 'cancelled' ? 'selected' : '' }}>Cancelled</option>
+                            </select>
+                            <button type="submit" class="ml-2 text-blue-500 hover:underline text-sm">Update</button>
+                        </form>
+                    </td>
                     <td class="px-6 py-4">{{ $order->created_at->format('Y-m-d H:i') }}</td>
                 </tr>
                 @endforeach
