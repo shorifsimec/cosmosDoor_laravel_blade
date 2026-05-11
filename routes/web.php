@@ -58,5 +58,6 @@ Route::middleware('auth')->group(function () {
         Route::resource('colors', ColorController::class);
         Route::resource('orders', OrderController::class);
         Route::patch('orders/{order}/status', [OrderController::class, 'updateStatus'])->name('orders.updateStatus');
+        Route::get('orders/{order}/voucher', [OrderController::class, 'voucher'])->name('orders.voucher');
     });
 });

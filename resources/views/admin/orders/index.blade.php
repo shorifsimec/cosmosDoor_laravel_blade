@@ -36,6 +36,7 @@
                             </select>
                             <button type="submit" class="ml-2 text-blue-500 hover:underline text-sm">Update</button>
                         </form>
+                        <a href="{{ route('orders.voucher', $order->id) }}" target="_blank" class="text-green-500 hover:underline text-sm mt-2 block">Voucher (PDF)</a>
                     </td>
                     <td class="px-6 py-4">{{ $order->created_at->format('Y-m-d H:i') }}</td>
                 </tr>
