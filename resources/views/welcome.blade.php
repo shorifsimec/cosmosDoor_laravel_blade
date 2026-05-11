@@ -12,7 +12,7 @@
             <div class="flex justify-between h-16">
                 <div class="flex">
                     <div class="shrink-0 flex items-center">
-                        <a href="{{ route('dashboard') }}">
+                        <a href="{{ route('home') }}">
                             <x-application-logo class="block h-9 w-auto fill-current text-gray-800" />
                         </a>
                     </div>
@@ -22,8 +22,8 @@
                                 Categories
                             </button>
                             <div x-show="open" @click.away="open = false" class="absolute top-full mt-2 w-48 bg-white border border-gray-200 rounded shadow-lg z-50">
-                                @foreach($categories as $category)
-                                    <a href="#" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ $category->name }}</a>
+                                @foreach($categories as $categoryItem)
+                                    <a href="{{ route('home.category', $categoryItem->name) }}" class="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">{{ $categoryItem->name }}</a>
                                 @endforeach
                             </div>
                         </div>
@@ -33,7 +33,7 @@
                 <div class="flex items-center">
                     @if (Route::has('login'))
                         @auth
-                            <a href="{{ url('/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
+                            <a href="{{ url('admin/dashboard') }}" class="text-sm text-gray-700 underline">Dashboard</a>
                         @else
                             <a href="{{ route('login') }}" class="text-sm text-gray-700 underline">Log in</a>
                             @if (Route::has('register'))
@@ -47,7 +47,7 @@
     </nav>
 
     <div class="container mx-auto p-6">
-        <h1 class="text-3xl font-bold mb-8 text-center">Our Products</h1>
+        <h1 class="text-3xl font-bold mb-8 text-center">{{ $category ?? 'Our Products' }}</h1>
         <div class="grid grid-cols-1 md:grid-cols-3 lg:grid-cols-4 gap-6">
             @foreach($products as $product)
                 <div class="bg-white p-4 rounded-lg shadow-md">

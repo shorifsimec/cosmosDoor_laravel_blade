@@ -11,27 +11,27 @@ use App\Http\Controllers\Admin\OrderController;
 use App\Models\Product;
 use App\Models\Category;
 
+// Move auth routes before catch-all
+require __DIR__ . '/auth.php';
+
 Route::get('/', function () {
     $products = Product::all();
     $categories = Category::all();
     return view('welcome', compact('products', 'categories'));
-});
+})->name('home');
 
-Route::get('/dashboard', function () {
-    return view('dashboard');
-})->middleware(['auth', 'verified'])->name('dashboard');
-
-// Route::middleware('auth')->group(function () {
-//     Route::get('/profile', [ProfileController::class, 'edit'])->name('profile.edit');
-//     Route::patch('/profile', [ProfileController::class, 'update'])->name('profile.update');
-//     Route::delete('/profile', [ProfileController::class, 'destroy'])->name('profile.destroy');
-// });
+Route::get('/category/{category}', function ($category) {
+    $categories = Category::all();
+    $products = Product::whereHas('category', function ($q) use ($category) {
+        $q->where('name', $category);
+    })->get();
+    return view('welcome', compact('products', 'categories', 'category'));
+})->name('home.category');
 
 Route::middleware('auth')->group(function () {
-
-    Route::get('/dashboard', function () {
+    Route::get('admin/dashboard', function () {
         return view('dashboard');
-    })->name('dashboard');
+    })->name('admin.dashboard');
 
     // Customers Routes
     Route::resource('/admin/customers', CustomerController::class)->names('customers');
@@ -46,5 +46,3 @@ Route::middleware('auth')->group(function () {
         Route::resource('orders', OrderController::class);
     });
 });
-
-require __DIR__ . '/auth.php';
