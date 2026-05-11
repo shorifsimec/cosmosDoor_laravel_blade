@@ -17,9 +17,12 @@ require __DIR__ . '/auth.php';
 
 use App\Http\Controllers\CheckoutController;
 
-// Checkout Routes
-Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
-Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+use App\Http\Controllers\Customer\DashboardController as CustomerDashboardController;
+
+// Customer Routes
+Route::middleware(['auth'])->group(function () {
+    Route::get('/customer/dashboard', [CustomerDashboardController::class, 'index'])->name('customer.dashboard');
+});
 
 // Cart Routes
 Route::get('/cart', [CartController::class, 'index'])->name('cart.index');
