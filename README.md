@@ -71,6 +71,10 @@ php artisan key:generate
 
 php artisan migrate:fresh --seed
 
+globar serve/run:
+
+php artisan serve --host=0.0.0.0
+
 composer run dev
 
 ## when image not showing

@@ -1,4 +1,6 @@
 @php
+$isAdmin = Auth::user() && Auth::user()->role === 'admin';
+
 $menuItems = [
     [
         'label' => 'Dashboard',
@@ -19,7 +21,7 @@ $menuItems = [
         'children' => [
             ['label' => 'Categories', 'route' => 'categories.index', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M7 7h.01M7 3h5c.512 0 1.024.195 1.414.586l7 7a2 2 0 010 2.828l-7 7a2 2 0 01-2.828 0l-7-7A1.994 1.994 0 013 12V7a4 4 0 014-4z" />'],
             ['label' => 'Brands', 'route' => 'brands.index', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M9 12l2 2 4-4m5.618-4.016A11.955 11.955 0 0112 2.944a11.955 11.955 0 01-8.618 3.04A12.02 12.02 0 003 9c0 5.591 3.824 10.29 9 11.622 5.176-1.332 9-6.03 9-11.622 0-1.042-.133-2.052-.382-3.016z" />'],
-            ['label' => 'Colors', 'route' => 'colors.index', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 002-2v-4a2 2 0 00-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />'],
+            ['label' => 'Colors', 'route' => 'colors.index', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M7 21a4 4 0 01-4-4V5a2 2 0 012-2h4a2 2 0 012 2v12a4 4 0 01-4 4zm0 0h12a2 2 0 02-2-2v-4a2 2 0 02-2-2h-2.343M11 7.343l1.657-1.657a2 2 0 012.828 0l2.829 2.829a2 2 0 010 2.828l-8.486 8.485M7 17h.01" />'],
             ['label' => 'Products', 'route' => 'products.index', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M20 7l-8-4-8 4m16 0l-8 4m8-4v10l-8 4m0-10L4 7m8 4v10M4 7v10l8 4" />'],
             ['label' => 'Orders', 'route' => 'orders.index', 'icon' => '<path stroke-linecap="round" stroke-linejoin="round" d="M16 11V7a4 4 0 00-8 0v4M5 9h14l1 12H4L5 9z" />'],
         ],
@@ -40,8 +42,8 @@ $menuItems = [
   <div
     class="p-6 text-xl font-bold border-b border-slate-700 whitespace-nowrap overflow-hidden flex justify-between items-center">
     <div>
-      <span x-show="sidebarOpen || window.innerWidth < 1024" x-transition>Admin Panel</span>
-      <span x-show="!sidebarOpen && window.innerWidth > 1024" x-transition>AP</span>
+      <span x-show="sidebarOpen || window.innerWidth < 1024" x-transition>{{ $isAdmin ? 'Admin Panel' : 'Customer Panel' }}</span>
+      <span x-show="!sidebarOpen && window.innerWidth > 1024" x-transition>{{ $isAdmin ? 'AP' : 'CP' }}</span>
     </div>
 
     <!-- Close button for mobile -->
@@ -54,63 +56,81 @@ $menuItems = [
 
   <nav class="p-4 space-y-2">
 
-    @foreach ($menuItems as $item)
-    @php
-    $isActive =
-    request()->routeIs($item['route'] ?? '') ||
-    collect($item['children'] ?? [])
-    ->pluck('route')
-    ->contains(fn($r) => request()->routeIs($r));
-    @endphp
+    @if ($isAdmin)
+      @foreach ($menuItems as $item)
+      @php
+      $isActive =
+      request()->routeIs($item['route'] ?? '') ||
+      collect($item['children'] ?? [])
+      ->pluck('route')
+      ->contains(fn($r) => request()->routeIs($r));
+      @endphp
 
-    @if (!empty($item['children']))
-    <div x-data="{ open: {{ $isActive ? 'true' : 'false' }} }">
+      @if (!empty($item['children']))
+      <div x-data="{ open: {{ $isActive ? 'true' : 'false' }} }">
 
-      <button @click="open = !open"
-        class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700 {{ $isActive ? 'bg-slate-700' : '' }}">
-        <div class="flex items-center space-x-3">
-          <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-            viewBox="0 0 24 24">
-            {!! $item['icon'] !!}
+        <button @click="open = !open"
+          class="w-full flex justify-between items-center px-3 py-2 rounded hover:bg-slate-700 {{ $isActive ? 'bg-slate-700' : '' }}">
+          <div class="flex items-center space-x-3">
+            <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+              viewBox="0 0 24 24">
+              {!! $item['icon'] !!}
+            </svg>
+            <span x-show="sidebarOpen || window.innerWidth < 1024"
+              class="transition-opacity duration-300">{{ $item['label'] }}</span>
+          </div>
+
+          <svg x-show="sidebarOpen || window.innerWidth < 1024"
+            class="w-4 h-4 transform transition-transform" :class="open ? 'rotate-180' : ''"
+            fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+            <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
           </svg>
-          <span x-show="sidebarOpen || window.innerWidth < 1024"
-            class="transition-opacity duration-300">{{ $item['label'] }}</span>
+        </button>
+
+        <div x-show="open && (sidebarOpen || window.innerWidth < 1024)" x-transition
+          class="ml-9 mt-2 space-y-1">
+          @foreach ($item['children'] as $child)
+          <a href="{{ route($child['route']) }}"
+            class="flex items-center space-x-3 px-3 py-2 rounded text-sm hover:bg-slate-700
+    {{ request()->routeIs($child['route']) ? 'bg-slate-700 font-semibold' : '' }}">
+            <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+                {!! $child['icon'] !!}
+            </svg>
+            <span>{{ $child['label'] }}</span>
+          </a>
+          @endforeach
         </div>
-
-        <svg x-show="sidebarOpen || window.innerWidth < 1024"
-          class="w-4 h-4 transform transition-transform" :class="open ? 'rotate-180' : ''"
-          fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-          <path stroke-linecap="round" stroke-linejoin="round" d="M19 9l-7 7-7-7" />
-        </svg>
-      </button>
-
-      <div x-show="open && (sidebarOpen || window.innerWidth < 1024)" x-transition
-        class="ml-9 mt-2 space-y-1">
-        @foreach ($item['children'] as $child)
-        <a href="{{ route($child['route']) }}"
-          class="flex items-center space-x-3 px-3 py-2 rounded text-sm hover:bg-slate-700
-{{ request()->routeIs($child['route']) ? 'bg-slate-700 font-semibold' : '' }}">
-          <svg class="w-5 h-5 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
-              {!! $child['icon'] !!}
-          </svg>
-          <span>{{ $child['label'] }}</span>
-        </a>
-        @endforeach
       </div>
-    </div>
+      @else
+      <a href="{{ route($item['route']) }}"
+        class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-slate-700
+    {{ $isActive ? 'bg-slate-700 font-semibold' : '' }}">
+        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
+          viewBox="0 0 24 24">
+          {!! $item['icon'] !!}
+        </svg>
+        <span x-show="sidebarOpen || window.innerWidth < 1024"
+          class="transition-opacity duration-300">{{ $item['label'] }}</span>
+      </a>
+      @endif
+      @endforeach
     @else
-    <a href="{{ route($item['route']) }}"
-      class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-slate-700
-{{ $isActive ? 'bg-slate-700 font-semibold' : '' }}">
-      <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2"
-        viewBox="0 0 24 24">
-        {!! $item['icon'] !!}
-      </svg>
-      <span x-show="sidebarOpen || window.innerWidth < 1024"
-        class="transition-opacity duration-300">{{ $item['label'] }}</span>
-    </a>
+      {{-- Customer Menu Items --}}
+      <a href="{{ route('customer.dashboard') }}"
+        class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('customer.dashboard') ? 'bg-slate-700 font-semibold' : '' }}">
+        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l2-2m0 0l7-7 7 7M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span x-show="sidebarOpen || window.innerWidth < 1024" class="transition-opacity duration-300">My Dashboard</span>
+      </a>
+      <a href="{{ route('home') }}"
+        class="flex items-center space-x-3 px-3 py-2 rounded hover:bg-slate-700 {{ request()->routeIs('home') ? 'bg-slate-700 font-semibold' : '' }}">
+        <svg class="w-6 h-6 shrink-0" fill="none" stroke="currentColor" stroke-width="2" viewBox="0 0 24 24">
+          <path stroke-linecap="round" stroke-linejoin="round" d="M3 12l9-9 9 9M5 10v10a1 1 0 001 1h3m10-11l2 2m-2-2v10a1 1 0 01-1 1h-3m-6 0a1 1 0 001-1v-4a1 1 0 011-1h2a1 1 0 011 1v4a1 1 0 001 1m-6 0h6" />
+        </svg>
+        <span x-show="sidebarOpen || window.innerWidth < 1024" class="transition-opacity duration-300">Home</span>
+      </a>
     @endif
-    @endforeach
 
   </nav>
 </aside>
