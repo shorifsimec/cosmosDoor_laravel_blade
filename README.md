@@ -65,14 +65,28 @@ npm install
 
 npm run build
 
-npm run dev
+setup .env file
 
 php artisan key:generate
 
 php artisan migrate:fresh --seed
 
-php artisan serve
+composer run dev
 
 ## when image not showing
 
 php artisan storage:link
+
+======
+
+php artisan migrate
+
+php artisan config:clear
+
+php artisan cache:clear
+
+php artisan config:cache
+
+admin@gmail.com
+
+12345678
