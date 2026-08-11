@@ -30,6 +30,10 @@ Route::post('/cart/add/{product}', [CartController::class, 'add'])->name('cart.a
 Route::delete('/cart/remove/{product}', [CartController::class, 'remove'])->name('cart.remove');
 Route::patch('/cart/update/{product}', [CartController::class, 'update'])->name('cart.update');
 
+// Checkout Routes
+Route::get('/checkout', [CheckoutController::class, 'index'])->name('checkout.index');
+Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.store');
+
 Route::get('/', function () {
     $products = Product::all();
     $categories = Category::all();
