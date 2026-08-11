@@ -37,7 +37,7 @@ Route::post('/checkout', [CheckoutController::class, 'store'])->name('checkout.s
 Route::get('/', function () {
     $products = Product::all();
     $categories = Category::all();
-    return view('welcome', compact('products', 'categories'));
+    return view('publicPage.welcome', compact('products', 'categories'));
 })->name('home');
 
 Route::get('/category/{category}', function ($category) {
@@ -45,8 +45,13 @@ Route::get('/category/{category}', function ($category) {
     $products = Product::whereHas('category', function ($q) use ($category) {
         $q->where('name', $category);
     })->get();
-    return view('welcome', compact('products', 'categories', 'category'));
+    return view('publicPage.welcome', compact('products', 'categories', 'category'));
 })->name('home.category');
+
+Route::get('/about', function () {
+    $categories = Category::all();
+    return view('publicPage.about', compact('categories'));
+})->name('about');
 
 Route::middleware(['auth', 'admin'])->group(function () {
     Route::get('admin', function () {
