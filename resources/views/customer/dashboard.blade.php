@@ -19,7 +19,7 @@
                 <tr>
                     <td class="px-6 py-4">{{ $order->id }}</td>
                     <td class="px-6 py-4">{{ $order->created_at->format('Y-m-d H:i') }}</td>
-                    <td class="px-6 py-4">${{ $order->total_price }}</td>
+                    <td class="px-6 py-4"><span class="font-bold">৳</span> {{ $order->total_price }}</td>
                     <td class="px-6 py-4 capitalize">{{ $order->status }}</td>
                 </tr>
             @endforeach

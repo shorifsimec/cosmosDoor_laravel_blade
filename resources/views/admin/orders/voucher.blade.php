@@ -19,13 +19,13 @@
             @foreach($products as $item)
             <tr>
                 <td>{{ $item['name'] }}</td>
-                <td>${{ $item['price'] }}</td>
+                <td><span class="font-bold">৳ / $</span> {{ $item['price'] }}</td>
                 <td>{{ $item['quantity'] }}</td>
-                <td>${{ $item['price'] * $item['quantity'] }}</td>
+                <td><span class="font-bold">৳ / $</span> {{ $item['price'] * $item['quantity'] }}</td>
             </tr>
             @endforeach
         </tbody>
     </table>
-    <h3>Grand Total: ${{ $order->total_price }}</h3>
+    <h3>Grand Total: <span class="font-bold">৳</span> {{ $order->total_price }}</h3>
 </body>
 </html>

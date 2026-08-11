@@ -60,12 +60,12 @@
                 <div class="mt-2 grid grid-cols-2 gap-4">
                     <div>
                         <span class="text-sm text-gray-500 uppercase font-bold">Primary Price</span>
-                        <p class="text-2xl font-bold text-green-600">${{ number_format($product->price1, 2) }}</p>
+                        <p class="text-2xl font-bold text-green-600"><span class="font-bold">৳</span> {{ number_format($product->price1, 2) }}</p>
                     </div>
                     @if($product->price2)
                     <div>
                         <span class="text-sm text-gray-500 uppercase font-bold">Secondary Price</span>
-                        <p class="text-xl text-gray-400 line-through">${{ number_format($product->price2, 2) }}</p>
+                        <p class="text-xl text-gray-400 line-through"><span class="font-bold">৳</span> {{ number_format($product->price2, 2) }}</p>
                     </div>
                     @endif
                     <div>

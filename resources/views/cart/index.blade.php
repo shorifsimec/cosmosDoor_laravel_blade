@@ -35,7 +35,7 @@
                         @endphp
                         <tr>
                             <td class="p-2">{{ $item['name'] }}</td>
-                            <td class="p-2">${{ $item['price'] }}</td>
+                            <td class="p-2"><span class="font-bold">৳</span> {{ $item['price'] }}</td>
                             <td class="p-2">
                                 <form action="{{ route('cart.update', $id) }}" method="POST">
                                     @csrf @method('PATCH')
@@ -43,7 +43,7 @@
                                     <button type="submit" class="text-blue-500 ml-2">Update</button>
                                 </form>
                             </td>
-                            <td class="p-2">${{ $subtotal }}</td>
+                            <td class="p-2"><span class="font-bold">৳</span> {{ $subtotal }}</td>
                             <td class="p-2">
                                 <form action="{{ route('cart.remove', $id) }}" method="POST">
                                     @csrf @method('DELETE')
@@ -55,7 +55,7 @@
                 </tbody>
             </table>
             <div class="mt-6 flex justify-end">
-                <h2 class="text-xl font-bold">Grand Total: ${{ $grandTotal }}</h2>
+                <h2 class="text-xl font-bold">Grand Total: <span class="font-bold">৳</span> {{ $grandTotal }}</h2>
             </div>
             <div class="mt-4 flex space-x-4">
                 <a href="{{ route('home') }}" class="text-blue-500 underline">Continue Shopping</a>
