@@ -40,6 +40,11 @@ Route::get('/', function () {
     return view('publicPage.welcome', compact('products', 'categories'));
 })->name('home');
 
+Route::get('/product/{product}', function (Product $product) {
+    $categories = Category::all();
+    return view('publicPage.product', compact('product', 'categories'));
+})->name('public.products.show');
+
 Route::get('/category/{category}', function ($category) {
     $categories = Category::all();
     $products = Product::whereHas('category', function ($q) use ($category) {
