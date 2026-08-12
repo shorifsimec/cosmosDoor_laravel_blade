@@ -94,3 +94,40 @@ php artisan config:cache
 admin@gmail.com
 
 12345678
+
+
+
+
+
+
+php 8.3 to 8.2 and laravel 13 to 12 convert process:
+
+
+
+composer require laravel/framework:^12.0 --with-all-dependencies
+
+Then verify:
+
+php -v
+php artisan --version
+composer check-platform-reqs
+
+
+If Composer gives dependency errors
+
+Run:
+
+composer why-not laravel/framework 12.*
+
+and:
+
+composer why-not php 8.2
+
+if php version not change auto then manualy change 8.3 to 8.2 in composer.json
+
+then
+
+
+rm composer.lock
+rm -rf vendor
+composer install
